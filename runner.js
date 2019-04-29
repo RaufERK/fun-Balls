@@ -92,12 +92,12 @@ function moveMyDiv(param) {
         mydivData.style.top = topPos + 'px';
         mydivData.style.transform = `rotate(${angle}deg)`;
 
-    }, 10);
+    }, 30);
 }
 
 function createDivs() {
     let parentElem = document.body;
-    let numberOfDiv = Math.round(Math.random() * 50);
+    let numberOfDiv = Math.round(Math.random() * 20+20);
     // numberOfDiv = 1;
     for (let i = 0; i <= numberOfDiv; i++) {
         let mydivData = document.createElement('div');
