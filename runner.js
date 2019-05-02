@@ -1,13 +1,41 @@
 function moveMyDiv(param) {
     let mydivData = document.getElementById(param);
-    // mydivData.innerText = param;
+
     mydivData.style.backgroundColor = `rgb(${Math.random() * 256},${Math.random() * 256},${Math.random() * 256})`;
-    let widthSize = Math.round(Math.random() * 100) + 20;
-    // widthSize = 100;
+    let widthSize = Math.round(Math.random() * 100) + 40;
+
     mydivData.style.width = widthSize + 'px';
     mydivData.style.height = widthSize + 'px';
 
-    let ballMaxSize = Math.round(Math.sqrt(widthSize * widthSize * 2) * 0.85);
+    let ballMaxSize = Math.round(Math.sqrt(widthSize * widthSize * 2)*0.85);
+
+    const maxLeft = window.innerWidth;
+    const maxTop = window.innerHeight;
+
+    console.log('maxLeft:', maxLeft);
+    console.log('maxTop:', maxTop);
+
+    let centralDivData = document.getElementById('main');
+    centralDivData.style.backgroundColor = `rgb(${Math.random() * 256},${Math.random() * 256},${Math.random() * 256})`;
+
+    let centalBoxSizePrc = 0.20;
+    let cBoxWidth = Math.round(maxLeft * centalBoxSizePrc);
+    let cBoxHeight = Math.round(maxTop * centalBoxSizePrc);
+    let cBoxLeft = Math.round((maxLeft - cBoxWidth) / 2);
+    let cBoxTop = Math.round((maxTop - cBoxHeight) / 2);
+    let cBoxRight = cBoxLeft + cBoxWidth;
+    let cBoxBottom = cBoxTop + cBoxHeight;
+
+    centralDivData.style.left = cBoxLeft + 'px';
+    centralDivData.style.top = cBoxTop + 'px';
+    centralDivData.style.width = cBoxWidth + 'px';
+    centralDivData.style.height = cBoxHeight + 'px';
+
+
+    console.log('cBoxLeft:', cBoxLeft);
+    console.log('cBoxTop:', cBoxTop);
+    console.log('cBoxRight:', cBoxRight);
+    console.log('cBoxBottom:', cBoxBottom);
 
     let leftPos = Math.round(Math.random() * (window.innerWidth - ballMaxSize));
     let topPos = Math.round(Math.random() * (window.innerHeight - ballMaxSize));
@@ -19,48 +47,10 @@ function moveMyDiv(param) {
 
     var timerId = setInterval(function () {
 
-        // let allDivArray = document.getElementsByTagName('div');        
-        // for (let i = 0; i <= allDivArray.length; i++) {
-        //     if (allDivArray[i] != undefined && param != allDivArray[i].id) {
-        //         let currentDiv = allDivArray[i];
+        let rightPos = leftPos + ballMaxSize;
+        let bottomPos = topPos + ballMaxSize;
 
-                
-        //         currDivTop = currentDiv.style.top.slice(0, -2);
-        //         currDivLeft = currentDiv.style.left.slice(0, -2);
-        //         currDivWidth = currentDiv.style.width.slice(0, -2);
-        //         // console.log(`${currentDiv.style.top}  ${currDivTop}    currDivWidth ${currDivWidth} ${currentDiv.style.width}`)
-
-        //         let horizontalMatch = currDivTop >= topPos && currDivTop <= topPos + widthSize;
-        //         let verticalMatch = currDivLeft >= leftPos && currDivLeft <= leftPos + widthSize;
-
-        //         if (horizontalMatch) {
-        //             // console.log('horizontalMatch!!!')
-        //             if (xSpeed > 0 && leftPos + widthSize > currDivLeft&& leftPos+widthSize<currDivLeft+currDivWidth) {
-        //                 console.log(` leftPos: ${leftPos}  ${widthSize}    ${currDivWidth}`);
-        //                 xSpeed = xSpeed * -1;
-        //                 // leftPos += xSpeed;
-        //             }
-        //             if (xSpeed < 0 && leftPos < currDivLeft + currDivWidth&&leftPos>currDivLeft) {
-        //                 console.log(`  ${leftPos}  ${currDivLeft}    ${currDivWidth}`);
-        //                 xSpeed = xSpeed * -1;
-        //                 // leftPos += xSpeed;
-        //             }
-        //         }
-        //         if (verticalMatch){              
-                
-                
-        //         }
-        //     }
-        // }
-
-
-        const maxLeft = window.innerWidth - ballMaxSize;
-        const maxTop = window.innerHeight - ballMaxSize;
-
-
-
-
-        if (leftPos >= maxLeft) {
+        if (rightPos >= maxLeft) {
             xSpeed = -1 * Math.round(Math.random() * 10);
             mydivData.style.backgroundColor = `rgb(${Math.random() * 256},${Math.random() * 256},${Math.random() * 256})`;
             rSpeed = (Math.round(Math.random()) || -1) * Math.round(Math.random() * 5);
@@ -72,7 +62,7 @@ function moveMyDiv(param) {
             rSpeed = (Math.round(Math.random()) || -1) * Math.round(Math.random() * 5);
         }
 
-        if (topPos >= maxTop) {
+        if (bottomPos >= maxTop) {
             ySpeed = -1 * Math.round(Math.random() * 10);
             mydivData.style.backgroundColor = `rgb(${Math.random() * 256},${Math.random() * 256},${Math.random() * 256})`;
             rSpeed = (Math.round(Math.random()) || -1) * Math.round(Math.random() * 5);
@@ -84,6 +74,30 @@ function moveMyDiv(param) {
             rSpeed = (Math.round(Math.random()) || -1) * Math.round(Math.random() * 5);
         }
 
+        let horizontalMatch = rightPos >= cBoxLeft && leftPos <= cBoxRight;
+        let verticalMatch = bottomPos >= cBoxTop && topPos <= cBoxBottom;
+
+        if (xSpeed > 0 && rightPos >= cBoxLeft && leftPos < cBoxLeft && verticalMatch) {
+            xSpeed = -1 * xSpeed;
+            centralDivData.style.backgroundColor = `rgb(${0},${Math.random() * 256},${0})`;
+        }
+        if (xSpeed < 0 && leftPos <= cBoxRight && rightPos > cBoxRight && verticalMatch) {
+            xSpeed = -1 * xSpeed;
+            centralDivData.style.backgroundColor = `rgb(${0},${Math.random() * 256},${0})`;
+        }
+
+        if (ySpeed > 0 && bottomPos >= cBoxTop && topPos<cBoxTop && horizontalMatch) {
+            ySpeed = -1 * ySpeed;
+            centralDivData.style.backgroundColor = `rgb(${0},${Math.random() * 256},${0})`;
+        }
+
+        if (ySpeed < 0 && topPos <= cBoxBottom && bottomPos>cBoxBottom && horizontalMatch) {
+            ySpeed = -1 * ySpeed;
+            centralDivData.style.backgroundColor = `rgb(${0},${Math.random() * 256},${0})`;
+        }
+        
+
+
         leftPos += xSpeed; //x
         topPos += ySpeed;  //y
         angle += rSpeed // rotation
@@ -92,13 +106,13 @@ function moveMyDiv(param) {
         mydivData.style.top = topPos + 'px';
         mydivData.style.transform = `rotate(${angle}deg)`;
 
-    }, 10);
+    }, 25);
 }
 
 function createDivs() {
     let parentElem = document.body;
     let numberOfDiv = Math.round(Math.random() * 50);
-    // numberOfDiv = 1;
+    numberOfDiv = 40;
     for (let i = 0; i <= numberOfDiv; i++) {
         let mydivData = document.createElement('div');
         mydivData.className = "box";
