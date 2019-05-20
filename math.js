@@ -1,27 +1,42 @@
-let arr1 = [1, 2, 3, [10, 20]];
-let obj = {
-    first: 11,
-    second: 22,
-    arr2: [33, 44, [55, 66, [77, 88, [99, 100]]]],
-    myObj: { third: 333, fourth: 444 }
-}
-arr1.push(obj);
-let path = [];
-function myFunc(parameter) {
-    // console.log('>>>>>>>>');
-    
-    for (let key in parameter) {
-        if (typeof (parameter[key]) === 'object') {
-            path.push(parameter[key]);
-            myFunc(parameter[key]);
-        }
-        else {
-            console.log(`path: ${path} key: ${key}       parameter[key]: ${parameter[key]}      type: ${typeof parameter[key]}`)
-        }
+// function FunctionArray(count)
+// {
+//     var arr = [];
+//     for (var i = 0; i < count; i++) {
+//         // let myMunber=i;
+//         arr[i] = function() { console.log(i) };
+//     }
+//     return arr;
+// }
+
+// var i=100;
+// var arr = FunctionArray(i);
+
+// //Проверка
+// arr[50]();
+
+var data=[
+    {type:"Человек",name:"Вася",city:"Москва"},
+    {type:"Человек",name:"Петя",city:"Казань"},
+    {type:"Человек",name:"Коля",city:"Рязань"},
+ ]
+ var peoples=Array();
+ var man=function(type){
+    this.type=type;
+ };
+ 
+ man.prototype={
+    type:"",
+    params:{
+        name:"имя",
+        city:"город",
+        age:0
     }
-    path.pop();
-}
-myFunc(arr1);
-//console.log(arr1)
-
-
+ }
+ for(i in data){
+    var current=data[i];
+    var obj=new man(current);
+    obj.params.name=current.name;
+    obj.params.city=current.city;
+    console.log(current,obj)
+    peoples.push(obj);
+ }
